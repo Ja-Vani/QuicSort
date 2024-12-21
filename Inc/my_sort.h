@@ -30,13 +30,13 @@ void insert_sort(T *first, T *last, Compare comp) {
 
 template<typename T, typename Compare>
 T *partition(T *first, T *last, Compare comp) {
-    int pivot;
-    int* i = first - 1;  // Указатель для меньших элементов
+    T pivot;
+    T* i = first - 1;  // Указатель для меньших элементов
     int count = 0;
-    for (int* j = first; j < last; ++j) {
+    for (T* j = first; j < last; ++j) {
         count++;
     }
-    int *m = i + (count / 2);
+    T *m = i + (count / 2);
     if(*first > *(last-1)) {
         if(*m > *first) {
             pivot = *first;
@@ -59,7 +59,7 @@ T *partition(T *first, T *last, Compare comp) {
         }
     }
 
-    for (int* j = first; j < last; ++j) {
+    for (T* j = first; j < last; ++j) {
         if (comp(*j, pivot)) {
             ++i;
             swap(i, j); // Меняем местами элементы
