@@ -18,20 +18,22 @@ void swap(T* a, T* b) {
 template<typename T, typename Compare>
 void insert_sort(T *first, T *last, Compare comp) {
     T *j;
-    for (T *i = first; i != last; ++i) {
+    for (T *i = first + 1; i != last; ++i) {
+        T temp = *i;
         j = i;
 
-        while (j!=first && !comp(*(j-1), *(j))) {
-            swap((j-1), (j));
+        while (j!=first && !comp(*(j-1), temp)) {
+            *j = *(j-1);
             j--;
         }
+        *j = temp;
     }
 }
 
 template<typename T, typename Compare>
 T *partition(T *first, T *last, Compare comp) {
     T pivot;
-    T* i = first;  // Указатель для меньших элементов
+    T* i = first;
     int count = 0;
     for (T* j = first; j < last; ++j) {
         count++;
@@ -40,10 +42,8 @@ T *partition(T *first, T *last, Compare comp) {
     if(*first > *(last-1)) {
         if(*m > *first) {
             pivot = *first;
-            //swap(first, (last-1));
         } else if(*m > *(last-1)) {
             pivot = *m;
-            //swap(m, (last-1));
         } else {
             pivot = *(last-1);
         }
@@ -52,10 +52,8 @@ T *partition(T *first, T *last, Compare comp) {
             pivot = *(last-1);
         } else if(*m > *(first)) {
             pivot = *m;
-            //swap(m, (last-1));
         } else {
             pivot = *first;
-            //swap(first, (last-1));
         }
     }
 
