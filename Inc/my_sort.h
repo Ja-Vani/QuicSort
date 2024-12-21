@@ -31,7 +31,7 @@ void insert_sort(T *first, T *last, Compare comp) {
 template<typename T, typename Compare>
 T *partition(T *first, T *last, Compare comp) {
     T pivot;
-    T* i = first - 1;  // Указатель для меньших элементов
+    T* i = first;  // Указатель для меньших элементов
     int count = 0;
     for (T* j = first; j < last; ++j) {
         count++;
@@ -40,10 +40,10 @@ T *partition(T *first, T *last, Compare comp) {
     if(*first > *(last-1)) {
         if(*m > *first) {
             pivot = *first;
-            swap(first, (last-1));
+            //swap(first, (last-1));
         } else if(*m > *(last-1)) {
             pivot = *m;
-            swap(m, (last-1));
+            //swap(m, (last-1));
         } else {
             pivot = *(last-1);
         }
@@ -52,21 +52,29 @@ T *partition(T *first, T *last, Compare comp) {
             pivot = *(last-1);
         } else if(*m > *(first)) {
             pivot = *m;
-            swap(m, (last-1));
+            //swap(m, (last-1));
         } else {
             pivot = *first;
-            swap(first, (last-1));
+            //swap(first, (last-1));
         }
     }
 
-    for (T* j = first; j < last; ++j) {
-        if (comp(*j, pivot)) {
-            ++i;
-            swap(i, j); // Меняем местами элементы
+    T*j = last - 1;
+    do {
+        while(!comp(*j, pivot)) {
+            j--;
         }
-    }
-    swap(i + 1, last - 1); // Устанавливаем pivot на правильное место
-    return (i + 1);    // Возвращаем указатель на опорный элемент
+        while (comp(*i, pivot)) {
+            i++;
+        }
+        if(i <= j) {
+            swap(i, j);
+            i++;
+            j--;
+        }
+    } while(i <= j);
+    //swap(i + 1, last - 1); // Устанавливаем pivot на правильное место
+    return i;    // Возвращаем указатель на опорный элемент
 }
 
 template<typename T, typename Compare>
@@ -79,9 +87,9 @@ void quick_sort(T *first, T *last, Compare comp) {
         T* pi = partition(first, last, comp); // Получаем указатель на опорный элемент
         if(pi - first < last - pi + 1){
             quick_sort(first, pi, comp);         // Сортируем левую часть массива
-            first = pi + 1;
+            first = pi;
         } else {
-            quick_sort(pi + 1, last, comp);         // Сортируем левую часть массива
+            quick_sort(pi, last, comp);         // Сортируем левую часть массива
             last = pi;
         }
     }
